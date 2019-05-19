@@ -19,8 +19,7 @@ class UserRegister(Resource):
         user = self.getUserInfo(user_id)
         if len(user) == 0:
             ret = self.register(user_id, user_type)
-            print(ret)
-            if ret is not None:
+            if ret:
                 return {"register": "successful"}
             else:
                 return {"register": "fail"}
@@ -38,4 +37,8 @@ class UserRegister(Resource):
 
     def register(self, user_id, user_type):
         sql = "insert into user_info (id, user_id, user_type) values (null,'{}','{}')".format(user_id, user_type)
-        return self._connection_pool.execute(sql, commit=True)
+        try:
+            self._connection_pool.execute(sql, commit=True)
+        except:
+            return False
+        return True
