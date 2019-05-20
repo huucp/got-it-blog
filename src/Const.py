@@ -6,5 +6,7 @@ class Const(object):
     JOB_TEACHER = 'giao-vien'
     JOB_OTHER = 'khac'
 
+    CONTENT_LIMIT = 10
+
 
 
