@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 
-from src.db.DbUtils import *
-from src.db.MySqlConnectionPool import MySQLConnectionPool
+from db.DbUtils import *
+from db.MySqlConnectionPool import MySQLConnectionPool
 
 
 class Blog(Resource):
@@ -20,6 +20,8 @@ class Blog(Resource):
         user = getUserInfo(user_id, self._connection_pool)
         if len(user) == 0:
             return {'post blog  error': 'user is not registered, please register by FB or GG first!'}
+        if not validUser(user[0]):
+            return {'user info error': 'please update user info first'}
 
         blog_title = args['blog-title']
         blog_content = args['blog-content']

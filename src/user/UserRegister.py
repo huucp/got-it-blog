@@ -1,7 +1,6 @@
-from src.db.MySqlConnectionPool import MySQLConnectionPool
-from src.Const import Const
+from db.MySqlConnectionPool import MySQLConnectionPool
+from Const import Const
 from flask_restful import reqparse, abort, Api, Resource
-from flask import Flask
 
 
 class UserRegister(Resource):

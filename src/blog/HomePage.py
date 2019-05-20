@@ -1,10 +1,8 @@
 from flask_restful import Resource, reqparse
 
-from src.Const import Const
-from src.db.DbUtils import *
-from src.Utils import *
-import json
-from src.db.MySqlConnectionPool import MySQLConnectionPool
+from Const import Const
+from db.DbUtils import *
+from db.MySqlConnectionPool import MySQLConnectionPool
 
 
 class HomePage(Resource):
@@ -26,6 +24,11 @@ class HomePage(Resource):
         if user_id is None and blog_id is None:
             ret = self.getHomePage()
         else:
+            user = getUserInfo(user_id, self._connection_pool)
+            if len(user) == 0:
+                return {'user error': 'this user is not exist!'}
+            if not validUser(user[0]):
+                return {'user info error': 'please update user info first'}
             if user_id is not None:
                 ret = self.getPersonalpage(user_id)
             else:
@@ -42,7 +45,7 @@ class HomePage(Resource):
                 like_users += " and {} others".format(like_count - 2)
 
             content = row[1].strip()
-            if len(row[1]) >= Const.CONTENT_LIMIT and user_id is not None:
+            if len(row[1]) >= Const.CONTENT_LIMIT and blog_id is None:
                 content += ' ...'
             retDict.append({'id':row[4],"title": row[0], "content": content, "like": like_users})
 

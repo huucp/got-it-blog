@@ -1,6 +1,8 @@
-from src.db.MySqlConnectionPool import MySQLConnectionPool
+from db.MySqlConnectionPool import MySQLConnectionPool
 from flask_restful import Resource, reqparse
-from src.Utils import *
+from Utils import *
+from db.DbUtils import *
+
 
 
 class Likes(Resource):
@@ -19,7 +21,7 @@ class Likes(Resource):
             return {'get likes error': 'blog id is invalid'}
 
     def getLikes(self, blog_id):
-        sql = 'select user_id from like_tbl'
+        sql = 'select user_id from like_tbl where blog_id={}'.format(blog_id)
         try:
             return self._connection_pool.execute(sql)
         except:

@@ -1,8 +1,8 @@
 from flask_restful import Resource, reqparse
 
-from src.db.DbUtils import *
-from src.Utils import *
-from src.db.MySqlConnectionPool import MySQLConnectionPool
+from Utils import *
+from db.DbUtils import *
+from db.MySqlConnectionPool import MySQLConnectionPool
 
 
 class LikeBlog(Resource):
@@ -21,6 +21,11 @@ class LikeBlog(Resource):
         if not validateParams(user_id) or not validateParams(blog_id):
             return {'like blog error', 'params is invalid'}
         else:
+            user = getUserInfo(user_id, self._connection_pool)
+            if len(user) == 0:
+                return {'user error': 'this user is not exist!'}
+            if not validUser(user[0]):
+                return {'user info error': 'please update user info first'}
             if self.like(user_id, blog_id):
                 return {'like blog': 'successful'}
             else:

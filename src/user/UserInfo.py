@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 
-from src.Const import Const
-from src.db.MySqlConnectionPool import MySQLConnectionPool
+from Const import Const
+from db.MySqlConnectionPool import MySQLConnectionPool
 
 
 class UserInfo(Resource):
@@ -46,7 +46,7 @@ class UserInfo(Resource):
                 else:
                     return {'user info': 'fail to update info, please try again'}
             else:
-                return {'user info error': 'user name or user job is wrong'}
+                return {'user info error': 'user name or user job is invalid'}
 
     def validFbUser(self, name, phone):
         return name is not None and len(str(name)) > 0 and phone is not None and len(str(phone)) > 0
